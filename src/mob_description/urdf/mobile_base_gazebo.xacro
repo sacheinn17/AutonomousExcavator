@@ -7,7 +7,6 @@
     </gazebo>
 
     <gazebo>
-
         <plugin filename="gz-sim-imu-system"
                 name="gz::sim::systems::Imu">
         </plugin>
@@ -28,11 +27,9 @@
             name="gz::sim::systems::Sensors">
             <render_engine>ogre2</render_engine>
         </plugin>
-
     </gazebo>
 
    <gazebo reference = "camera_link">
-  
      <sensor name="camera" type="camera">
         <always_on>1</always_on>
         <topic>camera</topic>
@@ -54,23 +51,20 @@
 
     </gazebo>
 
-
     <gazebo reference="camera_link">
-    <sensor name="imu_sensor" type="imu">
-    <always_on>1</always_on>
-    <update_rate>1</update_rate>
-    <visualize>true</visualize>
-    <topic>imu</topic>
-</sensor>
+      <sensor name="imu_sensor" type="imu">
+      <always_on>1</always_on>
+      <update_rate>1</update_rate>
+      <visualize>true</visualize>
+      <topic>imu</topic>
+      </sensor>
+  </gazebo>
 
-</gazebo>
-    
-
-    <gazebo>
-        <plugin
-            filename="gz-sim-joint-state-publisher-system"
-            name="gz::sim::systems::JointStatePublisher">
-        </plugin>
-   </gazebo>
+  <gazebo>
+      <plugin
+          filename="gz-sim-joint-state-publisher-system"
+          name="gz::sim::systems::JointStatePublisher">
+      </plugin>
+  </gazebo>
 
 </robot>

@@ -14,8 +14,6 @@ def generate_launch_description():
     
     robot_description = ParameterValue(Command(['xacro ', urdf_path]), value_type=str)
     
-
-
     # robot_description = xacro.process_file(robot_description).toxml()
 
     # print(robot_description.value[0])
