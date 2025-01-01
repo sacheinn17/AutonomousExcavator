@@ -80,12 +80,12 @@ class moveRobot(Node):
             # print("ball")
             self.moveTowardsTarget()
         else:
-            # print("searching")
+            print("searching")
             self.searchForBall()
     def searchForBall(self):
         self.msg = Twist()
         self.msg.linear.x = 0.0
-        self.msg.angular.z = 0.5
+        self.msg.angular.z = 5.0
         self.cmdVel.publish(self.msg)
         time.sleep(0.2)
     def close(self):

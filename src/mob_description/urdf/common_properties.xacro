@@ -62,7 +62,7 @@
     <mass value = "0.1" />
         <inertia ixx="0.000166667" iyy = "0.000166667" izz="0.000166667" />
     </xacro:macro>
-    
+
    <xacro:macro name="wheel_link" params="prefix">
         <link name="${prefix}_wheel_link">
             <visual>
@@ -83,14 +83,12 @@
         </link>
     </xacro:macro>
 
-
-    <xacro:macro name = "wheel_joint" params = "child_prefix xyz">
+    <xacro:macro name = "wheel_joint" params = "child_prefix xyz xyz_axis">
         <joint name="base_${child_prefix}_wheel_joint" type="continuous">
             <parent link="base_link" />
             <child link="${child_prefix}_wheel_link" />
             <origin xyz="${xyz}" rpy="0 0 0" />
-            <axis xyz="0 1 0" />
+            <axis xyz="${xyz_axis}" />
         </joint>
     </xacro:macro>
-
 </robot>

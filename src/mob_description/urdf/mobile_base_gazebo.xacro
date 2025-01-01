@@ -14,8 +14,8 @@
         <plugin
             filename="gz-sim-diff-drive-system"
             name="gz::sim::systems::DiffDrive">
-            <left_joint>base_left_wheel_joint</left_joint>
-            <right_joint>base_right_wheel_joint</right_joint>
+            <left_joint>base_left_back_wheel_joint</left_joint>
+            <right_joint>base_right_back_wheel_joint</right_joint>
             <frame_id>odom</frame_id>
             <child_frame_id>base_footprint</child_frame_id>
             <wheel_separation>0.45</wheel_separation>

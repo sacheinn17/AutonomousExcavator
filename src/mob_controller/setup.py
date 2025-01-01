@@ -25,6 +25,7 @@ setup(
             "obj_transformer = mob_controller.obj_transformer:main",
             "move_action_server = mob_controller.actionsScripts:main",
             "move_action_client = mob_controller.action_client:main",
+            "cam_tester = mob_controller.camTest:main",
         ],
     },
 )
