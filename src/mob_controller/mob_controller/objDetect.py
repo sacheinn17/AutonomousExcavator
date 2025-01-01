@@ -34,13 +34,13 @@ class ImageSubscriber(Node):
         self.img = self.create_subscription(Image,"/camera",self.image_callback_,10)
         self.broadcaster = TransformBroadcaster(self)
         self.ballState = self.create_publisher(Bool,"/ballState",10)
+
     def image_callback_(self,msg):
             self.image = CvBridge().imgmsg_to_cv2(msg)
             self.image = cv2.cvtColor(self.image, cv2.COLOR_RGB2BGR)
             image,d,x= detect_yellow_box(self.image)
             b = Bool()
             if d>=0:
-                #  self.objPos.publish(arr)
                 obj = TransformStamped()
                 obj.header.frame_id = "camera_link"
                 obj.child_frame_id = "object"
@@ -59,8 +59,11 @@ class ImageSubscriber(Node):
 def main():
     rclpy.init()
 
-    node = ImageSubscriber()
-    rclpy.spin(node)
+    try:
+        node = ImageSubscriber()
+        rclpy.spin(node)
+    except KeyBoardInterupt as e:
+        
     node.destroy_node()
 
     rclpy.shutdown()
