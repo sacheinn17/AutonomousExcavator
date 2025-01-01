@@ -10,8 +10,8 @@ class controlRobot(Node):
     def __init__(self):
         super().__init__("controlRobot")
 
-        self.wheel_radius = 0
-        self.wheel_dist = 0
+        self.wheel_radius = 0.0325
+        self.wheel_dist = 0.2155
         self.vel = Twist()
 
         self.ports = serial.tools.list_ports.comports()
@@ -23,8 +23,9 @@ class controlRobot(Node):
         self.port = self.t[0]
         self.baud_rate = 9600
 
-        self.p_time = self.get_clock.now()
         self.wheel_pos = [0.0,0.0,0.0,0.0]
+        self.wl = 0.0
+        self.wr = 0.0
 
         self.joint_state_pub = self.create_publisher(JointState, "/joint_states", 10)
         self.create_subscription(Twist,"/cmd_vel",self.cmdCallback,10)
@@ -54,7 +55,7 @@ class controlRobot(Node):
 
     def send_floats_to_arduino(self,float1,float2):
         try:          
-            data = f"{float1},{float2}\n"
+            data = f"[{float1},{float2}]\n"
             print(f"Sending data: {data.strip()}")
             self.ser.write(data.encode())
             response = self.ser.readline().decode('utf-8').strip()
@@ -73,3 +74,10 @@ class controlRobot(Node):
             
         except Exception as e:
             self.get_logger().error(f"Error: {e}")
+
+
+def main():
+    rclpy.init()
+    node = controlRobot()
+    rclpy.spin(node)
+    rclpy.shutdown()
