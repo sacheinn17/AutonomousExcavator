@@ -82,8 +82,8 @@ def main():
     try:
         node = ImageSubscriber()
         rclpy.spin(node)
-    except KeyBoardInterupt as e:
+    except KeyboardInterrupt as e:
         
-    node.destroy_node()
+        node.destroy_node()
 
     rclpy.shutdown()
