@@ -36,14 +36,14 @@ class controlRobot(Node):
     def cmdCallback(self,msg:Twist):
         self.vel = msg
         self.get_logger().info(f"x: {msg.linear.x},{msg.angular.z}")
-        self.wl = (2*msg.linear.x - msg.angular.z*self.wheel_dist)/(2*self.wheel_radius)
-        self.wr = (2*msg.linear.x + msg.angular.z*self.wheel_dist)/(2*self.wheel_radius)
+        self.wl = (2*msg.linear.x + msg.angular.z*self.wheel_dist)/(2*self.wheel_radius)
+        self.wr = (2*msg.linear.x - msg.angular.z*self.wheel_dist)/(2*self.wheel_radius)
         self.send_floats_to_arduino(self.wl,self.wr)
 
     def timerCallback(self):
         self.joint_state = JointState()
         self.joint_state.header.stamp = self.get_clock().now().to_msg()
-        self.joint_state.name = ['base_left_back_joint', 'base_right_back_joint','base_left_front_joint', 'base_right_front_joint']
+        self.joint_state.name = ['base_left_back_wheel_joint', 'base_right_back_wheel_joint','base_left_front_wheel_joint', 'base_right_front_wheel_joint']
         self.wheel_pos[0] += self.wl*0.1
         self.wheel_pos[1] += self.wr*0.1
         self.wheel_pos[2] += self.wl*0.1
