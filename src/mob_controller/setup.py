@@ -22,7 +22,7 @@ setup(
         'console_scripts': [
             "runBot = mob_controller.simpleControl:main",
             "objDetect = mob_controller.objDetect:main",
-            "obj_transformer = mob_controller.obj_transformer:main",
+            "excavator_controller = mob_controller.excavatorController:main",
             "move_action_server = mob_controller.actionsScripts:main",
             "move_action_client = mob_controller.action_client:main",
             "cam_tester = mob_controller.camTest:main",
