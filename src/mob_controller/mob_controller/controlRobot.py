@@ -2,9 +2,11 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 import serial
-
+from std_msgs import Float32MultiArray
 import serial.tools.list_ports
 from sensor_msgs.msg import JointState
+import ser
+from servoController import set_angle
 
 class controlRobot(Node):
     def __init__(self):
@@ -29,6 +31,7 @@ class controlRobot(Node):
 
         self.joint_state_pub = self.create_publisher(JointState, "/joint_states", 10)
         self.create_subscription(Twist,"/cmd_vel",self.cmdCallback,10)
+        self.create_subscription(Float32MultiArray, 'float_array_mob',self.excavatorCallback, 10)
         self.ser = serial.Serial(self.port, self.baud_rate, timeout=1)
         self.get_logger().info(f"Connected to {self.port} at {self.baud_rate} baud rate.")
         self.timer = self.create_timer(0.1,self.timerCallback)
@@ -39,6 +42,9 @@ class controlRobot(Node):
         self.wl = (2*msg.linear.x + msg.angular.z*self.wheel_dist)/(2*self.wheel_radius)
         self.wr = (2*msg.linear.x - msg.angular.z*self.wheel_dist)/(2*self.wheel_radius)
         self.send_floats_to_arduino(self.wl,self.wr)
+
+    def excavatorCallback(self,msg):
+        set_angle(list(msg.data))
 
     def timerCallback(self):
         self.joint_state = JointState()
