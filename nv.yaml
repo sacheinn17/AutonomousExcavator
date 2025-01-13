@@ -1,0 +1,108 @@
+amcl:
+  ros__parameters:
+    use_sim_time: false
+    min_particles: 100
+    max_particles: 5000
+    laser_min_range: 0.01
+    laser_max_range: 5.0
+    laser_max_beams: 22
+    laser_z_hit: 0.95
+    laser_z_short: 0.1
+    laser_z_max: 0.05
+    laser_sigma_hit: 0.2
+    laser_likelihood_max_dist: 2.0
+    update_min_d: 0.2
+    update_min_a: 0.2
+    resample_interval: 1
+    transform_tolerance: 0.5
+    scan_topic: "/scan"
+    base_frame_id: "base_footprint"
+    odom_frame_id: "odom"
+    map_frame_id: "map"
+    use_map_topic: true
+    first_map_only: true
+    always_reset_initial_pose: false
+
+controller_server:
+  ros__parameters:
+    use_sim_time: false
+    controller_frequency: 20.0
+    min_velocity_x: 0.0
+    max_velocity_x: 0.26
+    min_velocity_theta: 0.0
+    max_velocity_theta: 1.82
+    linear_acceleration_limit: 2.5
+    angular_acceleration_limit: 3.2
+    footprint: "[[0.2, 0.2], [0.2, -0.2], [-0.2, -0.2], [-0.2, 0.2]]"
+    controller_plugins: ["FollowPath"]
+    observation_sources: laser_scan
+    
+    laser_scan:
+      data_type: LaserScan
+      topic: /scan
+      marking: true
+      clearing: true
+      obstacle_range: 2.5
+      raytrace_range: 3.0
+      inf_is_valid: true
+
+    FollowPath:
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+      use_velocity_scaled_lookahead_dist: true
+      desired_linear_vel: 0.5
+      lookahead_dist: 0.4
+      max_lookahead_dist: 1.0
+      min_lookahead_dist: 0.2
+      lookahead_time: 1.5
+      max_angular_vel: 1.5
+      transform_tolerance: 0.2
+
+local_costmap:
+  ros__parameters:
+    plugin_names: ["voxel_layer", "static_layer"]
+    plugin_types: ["nav2_costmap_2d::VoxelLayer", "nav2_costmap_2d::StaticLayer"]
+    resolution: 0.05
+    robot_radius: 0.2
+    scan_topic: "/scan"
+    obstacle_range: 2.5
+    raytrace_range: 3.0
+    observation_sources: laser_scan
+
+    laser_scan:
+      data_type: LaserScan
+      topic: /scan
+      marking: true
+      clearing: true
+      obstacle_range: 2.5
+      raytrace_range: 3.0
+      inf_is_valid: true
+
+global_costmap:
+  ros__parameters:
+    plugin_names: ["static_layer", "voxel_layer"]
+    plugin_types: ["nav2_costmap_2d::StaticLayer", "nav2_costmap_2d::VoxelLayer"]
+    resolution: 0.05
+    obstacle_range: 2.5
+    raytrace_range: 3.0
+    footprint: "[[0.2, 0.2], [0.2, -0.2], [-0.2, -0.2], [-0.2, 0.2]]"
+    observation_sources: laser_scan
+
+    laser_scan:
+      data_type: LaserScan
+      topic: /scan
+      marking: true
+      clearing: true
+      obstacle_range: 2.5
+      raytrace_range: 3.0
+      inf_is_valid: true
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: false
+    default_bt_xml_filename: "navigate_w_replanning_and_recovery.xml"
+
+planner_server:
+  ros__parameters:
+    use_sim_time: false
+    expected_planner_frequency: 5.0
+    grid_align_resolution: 0.05

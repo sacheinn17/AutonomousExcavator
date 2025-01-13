@@ -6,16 +6,19 @@ import sys
 import select
 import termios
 import tty
+import time
 
 class TeleopTwistKeyboard(Node):
     def __init__(self):
-        super().__init__('Excavator controler')
+        super().__init__('Excavator_controler')
         self.twist_pub = self.create_publisher(Twist, 'cmd_vel', 10)
         self.array_pub = self.create_publisher(Float32MultiArray, 'float_array_mob', 10)
 
         self.speed = 0.8
         self.turn = 1.0
-
+        self.exec_profile = [[]]
+        self.dump_profile = [[]]
+        self.reset_profile = [[]]
         self.settings = termios.tcgetattr(sys.stdin)
         self.init_message()
 
@@ -38,42 +41,40 @@ class TeleopTwistKeyboard(Node):
         try:
             twist = Twist()
             array_msg = Float32MultiArray()
-            array_msg.data = [90.0,20.0,20.0,20.0]
+            array_msg.data = [0.0,0.0,0.0,20.0]
             while rclpy.ok():
                 key = self.get_key()
-                if key in ['w', 'a', 's', 'd', 'q', 'e','z','r','v']:
-                    if key == 'w':
+                if key in ['w', 'a', 's', 'd','z','q','e']:
+                    if key == 'a':
                         twist.linear.x = self.speed
                         twist.angular.z = 0.0
-                    elif key == 's':
+                    elif key == 'd':
                         twist.linear.x = -self.speed
                         twist.angular.z = 0.0
-                    elif key == 'a':
+                    elif key == 's':
                         twist.linear.x = 0.0
                         twist.angular.z = self.turn
-                    elif key == 'd':
+                    elif key == 'w':
                         twist.linear.x = 0.0
                         twist.angular.z = -self.turn
-                    elif key == 'q':
-                        twist.angular.z += 0.1
-                    elif key == 'e':
-                        twist.angular.z -= 0.1
                     elif key == 'z':
                         twist.angular.z = 0.0
                         twist.linear.x = 0.0
-                    elif key == 'r':
-                        self.speed+=0.1 if self.speed<=1.0 else 0.0
-                    elif key == 'v':
-                        self.speed-=0.1 if self.speed>=0.0 else 0.0
+                    elif key == 'q':
+                        twist.linear.x = self.speed
+                        twist.angular.z = -self.turn
+                    elif key == 'e':
+                        twist.linear.x = -self.speed
+                        twist.angular.z = self.turn
                     self.twist_pub.publish(twist)
 
-                elif key in ['j', 'k', 'l','u','i','o','y','h']:
+                elif key in ['j', 'k', 'l','u','i','o','y','h','m']:
                     if key == 'h':
-                            array_msg.data[0]-=1.0 if array_msg.data[0] >0.0 else 0.0
+                            array_msg.data[0]-=1.0 if array_msg.data[3] >0.0 else 0.0
                     elif key == 'j':
-                            array_msg.data[1]-=1.0 if array_msg.data[1] >0.0 else 0.0
+                            array_msg.data[1]-=1.0 if array_msg.data[3] >0.0 else 0.0
                     elif key == 'k':
-                            array_msg.data[2]-=1.0 if array_msg.data[2] >0.0 else 0.0
+                            array_msg.data[2]-=1.0 if array_msg.data[3] >0.0 else 0.0
                     elif key == 'l':
                             array_msg.data[3]-=1.0 if array_msg.data[3] >0.0 else 0.0
                     elif key == 'y':
@@ -84,9 +85,30 @@ class TeleopTwistKeyboard(Node):
                             array_msg.data[2]+=1.0 if array_msg.data[2] <180.0 else 0.0
                     elif key == 'o':
                             array_msg.data[3]+=1.0 if array_msg.data[3] <180.0 else 0.0
+                    elif key == 'm':
+                        array_msg.data[0]= 0.0
+                        array_msg.data[1]= 0.0
+                        array_msg.data[2]= 0.0
                     self.array_pub.publish(array_msg)
                     self.get_logger().info(f"Published Float32MultiArray: {array_msg.data}")
-
+                elif key in ['v','b','n']:
+                    if key == 'v':
+                        for i in self.exec_profile:
+                            array_msg.data = i
+                            self.array_pub.publish(array_msg)
+                            self.get_logger().info(f"Executing excavation profile {i} ...")
+                            time.sleep(0.2)
+                    elif key == 'b':
+                        for i in self.dump_profile:
+                            array_msg.data = i
+                            self.array_pub.publish(array_msg)
+                            self.get_logger().info(f"Executing dump profile {i} ...")
+                            time.sleep(0.2)
+                    elif key == 'n':
+                        for i in self.reset_profile:
+                            self.array_pub.publish(array_msg)
+                            self.get_logger().info(f"Executing reset profile {i} ...")
+                            time.sleep(0.2)      
                 elif key == '\x03':  # CTRL+C
                     break
         finally:

@@ -27,7 +27,8 @@ setup(
             "move_action_client = mob_controller.action_client:main",
             "cam_tester = mob_controller.camTest:main",
             "control_robot = mob_controller.controlRobot:main",
-            "user_interface = mob_controller.userInterface:main"
+            "user_interface = mob_controller.userInterface:main",
+            "test = mob_controller.lidarTest:main",
         ],
     },
 )
