@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<robot name="three_axis_arm" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:robo_link name="base_robot_link" radius= "0.1" length="0.1" material="black" mass="0.2"/>
+<xacro:robo_link name="link_1" radius= "0.05" length="0.1" material="silver" mass="0.15"/>
+<xacro:robo_link name="link_2" radius= "0.04" length="0.4" material="black" mass="0.45" />
+<xacro:robo_link name="link_3" radius= "0.03" length="0.2" material="silver" mass="0.05" />
+<xacro:box_link name="gripper" sx="0.05" sy="0.05" sz="0.1" material="black" mass="0.1"/>
+<xacro:box_link name = "gripper_finger_1" sx="0.01" sy="0.03" sz="0.03" material="silver" mass="0.01"/>
+<xacro:box_link name = "gripper_finger_2" sx="0.01" sy="0.03" sz="0.03" material="silver" mass="0.01"/>
+  
+  <!-- <link name="gripper">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.1"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+      <material name="black"/>
+    </visual>
+  </link>
+
+  <link name="gripper_finger_2">
+    <visual>
+      <geometry>
+        <box size="0.01 0.03 0.03"/>
+      </geometry>
+      <origin xyz="0.005 0 0.015" rpy="0.0 0.0 0.0"/>
+      
+      <material name="silver"/>
+    </visual>
+  </link>
+
+  <link name="gripper_finger_1">
+    <visual>
+      <geometry>
+        <box size="0.01 0.03 0.03"/>
+      </geometry>
+      <origin xyz="-0.005 0 0.015" rpy="0.0 0.0 0.0"/>
+      <material name="silver"/>
+    </visual>
+  </link> -->
+
+  <!-- Joints and Links -->
+  <!-- Joint 1 -->
+
+  <joint name="joint_1" type="revolute">
+    <parent link="base_robot_link"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="10" velocity="1.0"/>
+  </joint>
+  <!-- Joint 2 -->
+  <joint name="joint_2" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="0 -0.02 0.1" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="10" velocity="1.0"/>
+  </joint>
+  <!-- Joint 3 -->
+  <joint name="joint_3" type="revolute">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <origin xyz="0 0.02 0.4" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="10" velocity="1.0"/>
+  </joint>
+  <!-- Gripper -->
+  <joint name="gripper_joint" type="fixed">
+    <parent link="link_3"/>
+    <child link="gripper"/>
+    <origin xyz="0 0.0 0.2" rpy="0 0 0"/>
+  </joint>
+  <!-- End Effector -->
+  <joint name="gripper_finger_1_joint" type="prismatic">
+    <parent link="gripper"/>
+    <child link="gripper_finger_1"/>
+    <origin xyz="0.005 0 0.1" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0" upper="0.025" effort="5" velocity="0.5"/>
+  </joint>
+
+  <joint name="gripper_finger_2_joint" type="prismatic">
+    <parent link="gripper"/>
+    <child link="gripper_finger_2"/>
+    <origin xyz="-0.005 0 0.1" rpy="0 0 0"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="0" upper="0.025" effort="5" velocity="0.5"/>
+  </joint>
+</robot>

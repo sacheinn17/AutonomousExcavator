@@ -5,6 +5,9 @@
         <color rgba="0 0.6 0 1" />
     </material>
 
+  <material name="silver">
+    <color rgba="0.8 0.8 0.8 1.0"/>
+  </material>
     <material name="gray">
         <color rgba="0.7 0.7 0.7 1" />
     </material>
@@ -91,4 +94,87 @@
             <axis xyz="${xyz_axis}" />
         </joint>
     </xacro:macro>
+
+
+
+
+<xacro:macro name="robo_link" params="name radius length material mass">
+
+  <link name="${name}">
+      <visual>
+        <geometry>
+          <cylinder length="${length}" radius="${radius}"/>
+        </geometry>
+          <origin xyz="0.0 0.0 ${length/2}" rpy="0.0 0.0 0.0"/>
+        <material name="${material}"/>
+      </visual>
+      <collision>
+          <geometry>
+              <cylinder length="${length}" radius="${radius}"/>
+          </geometry>
+          <origin xyz="0.0 0.0 ${length/2}" rpy="0.0 0.0 0.0"/>
+      </collision>
+      <inertial>
+          <mass value="${mass}" />
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <inertia ixx="${(mass/12) * (3*radius*radius + length*length)}" ixy="0" ixz="0"
+                  iyy="${(mass/12) * (3*radius*radius + length*length)}" iyz="0"
+                  izz="${(mass/2) * (radius*radius)}" />
+      </inertial>
+    </link>
+</xacro:macro>
+
+<!-- <xacro:macro name="gripper_finger" params="no side">
+  <link name="gripper_finger_${no}">
+    <visual>
+      <geometry>
+        <box size="0.01 0.03 0.03"/>
+      </geometry>
+      <origin xyz="0.005 0 0.015" rpy="0.0 0.0 0.0"/>
+      <material name="silver"/>
+    </visual>
+  </link>
+</xacro:macro> -->
+
+<xacro:macro name = "box_link" params = "name sx sy sz material mass">
+
+  <link name="${name}">
+    <visual>
+      <geometry>
+        <box size="${sx} ${sy} ${sz}"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+      <material name="${material}"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${sx} ${sy} ${sz}"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+    </collision>
+
+  <inertial>
+  <mass value="${mass}"/>
+  <origin xyz="0 0 0" rpy="0 0 0" />
+  <inertia ixx="${mass*(sy*sy + sz* sz)/12}" ixy="0.0" ixz="0.0" iyy="${mass*(sx*sx + sz* sz)/12}" iyz="0.0" izz="${mass*(sy*sy + sx* sx)/12}"/>
+  </inertial>
+
+  </link>
+
+</xacro:macro>
+
+
+<xacro:macro name="ros2_control_joint" params = "name mi ma">
+  <joint name="${name}">
+
+        <command_interface name = "position">
+            <param name="min" value="${mi}"/>
+            <param name="max" value="${ma}"/>        
+        </command_interface>    
+
+        <state_interface name = "velocity" />
+        <state_interface name = "position"/>
+    </joint>
+</xacro:macro>
+
 </robot>
