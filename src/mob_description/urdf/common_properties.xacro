@@ -124,33 +124,22 @@
     </link>
 </xacro:macro>
 
-<!-- <xacro:macro name="gripper_finger" params="no side">
-  <link name="gripper_finger_${no}">
-    <visual>
-      <geometry>
-        <box size="0.01 0.03 0.03"/>
-      </geometry>
-      <origin xyz="0.005 0 0.015" rpy="0.0 0.0 0.0"/>
-      <material name="silver"/>
-    </visual>
-  </link>
-</xacro:macro> -->
-
 <xacro:macro name = "box_link" params = "name sx sy sz material mass">
 
   <link name="${name}">
     <visual>
       <geometry>
-        <box size="${sx} ${sy} ${sz}"/>
+      <!-- <box size="0.1 0.1 0.1"/> -->
+        <mesh filename="file://$(find mob_description)/stl/excavator.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
       <material name="${material}"/>
     </visual>
     <collision>
       <geometry>
         <box size="${sx} ${sy} ${sz}"/>
       </geometry>
-      <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     </collision>
 
   <inertial>

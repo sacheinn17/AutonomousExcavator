@@ -79,11 +79,8 @@ class ImageSubscriber(Node):
 def main():
     rclpy.init()
 
-    try:
-        node = ImageSubscriber()
-        rclpy.spin(node)
-    except KeyboardInterrupt as e:
-        
-        node.destroy_node()
+    node = ImageSubscriber()
+    rclpy.spin(node)
+    node.destroy_node()
 
     rclpy.shutdown()
