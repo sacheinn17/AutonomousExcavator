@@ -5,7 +5,6 @@ import serial
 from std_msgs import Float32MultiArray
 import serial.tools.list_ports
 from sensor_msgs.msg import JointState
-import ser
 from servoController import set_angle
 
 class robo_controller(Node):
