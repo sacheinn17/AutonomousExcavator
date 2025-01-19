@@ -9,12 +9,21 @@
     <color rgba="0.8 0.8 0.8 1.0"/>
   </material>
     <material name="gray">
-        <color rgba="0.7 0.7 0.7 1" />
+        <color rgba="0.3 0.3 0.3 1" />
+    </material>
+
+    <material name="dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
     </material>
 
     <material name = "black">
-        <color rgba="0 0 0 1"/>
+        <color rgba="0.1 0.1 0.1 1"/>
     </material>
+
+    <material name = "orange">
+        <color rgba="1.0 0.5 0.0 1"/>
+    </material>
+
 
     <xacro:macro name="box_inertia" params="m x y z o_xyz o_rpy">
         <inertial>
@@ -73,7 +82,7 @@
                     <cylinder radius="${wheel_radius}" length="${wheel_length}" />
                 </geometry>
                 <origin xyz="0 0 0" rpy="${pi / 2.0} 0 0" />
-                <material name="gray" />
+                <material name="dark_gray" />
             </visual>
             <collision>
                 <geometry>

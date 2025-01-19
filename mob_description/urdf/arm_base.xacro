@@ -2,10 +2,10 @@
 <robot name="three_axis_arm" xmlns:xacro="http://ros.org/wiki/xacro">
 
 <xacro:robo_link name="base_robot_link" radius= "0.05" length="0.03" material="black" mass="0.2"/>
-<xacro:robo_link name="link_1" radius= "0.01" length="0.03" material="silver" mass="0.15"/>
+<xacro:robo_link name="link_1" radius= "0.01" length="0.03" material="orange" mass="0.15"/>
 <xacro:robo_link name="link_2" radius= "0.01" length="0.15" material="black" mass="0.45" />
-<xacro:robo_link name="link_3" radius= "0.01" length="0.15" material="silver" mass="0.05" />
-<xacro:box_link name="gripper" sx="0.05" sy="0.05" sz="0.1" material="black" mass="0.1"/>
+<xacro:robo_link name="link_3" radius= "0.01" length="0.15" material="orange" mass="0.05" />
+<xacro:box_link name="gripper" sx="0.05" sy="0.05" sz="0.1" material="dark_gray" mass="0.1"/>
 
   
   <!-- <link name="gripper">
@@ -45,7 +45,7 @@
   <joint name="joint_1" type="revolute">
     <parent link="base_robot_link"/>
     <child link="link_1"/>
-    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <origin xyz="0 0 0.03" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit lower="-3.14" upper="3.14" effort="10" velocity="1.0"/>
   </joint>

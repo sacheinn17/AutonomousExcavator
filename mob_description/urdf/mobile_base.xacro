@@ -33,7 +33,7 @@
     <xacro:wheel_link prefix="left_front" />
 
     <link name="camera_link">
-        <xacro:camera width="640" height="480" hfov="1.3962634" color="black" />
+        <xacro:camera width="640" height="480" hfov="1.3962634" color="gray" />
     </link>
 
     <joint name="base_joint" type="fixed">
@@ -50,7 +50,7 @@
     <joint name="base_camera_joint" type="fixed">
         <parent link="base_link"/>
         <child link="camera_link"/>
-        <origin xyz="${base_length/2 - 0.050} 0.0 ${base_height+0.015}" rpy="0.0 0.0 0.0"/>
+        <origin xyz="${base_length/2 -0.02} 0.0 ${base_height+0.015}" rpy="0.0 0.0 0.0"/>
         <!-- <limit lower="0.0" upper="180.0" effort="0.0" velocity="1.0"/> -->
     </joint>
 
@@ -58,7 +58,7 @@
     <joint name = "robo_base_joint" type = "fixed">
         <parent link="base_link"/>
         <child link="base_robot_link"/>
-        <origin xyz="${base_length/2.0} 0 0" rpy="0 0 0" />
+        <origin xyz="${base_length/2.0 - 0.08} 0.0 0.002" rpy="0 0 0" />
 
     </joint>
 
