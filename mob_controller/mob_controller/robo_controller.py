@@ -8,9 +8,9 @@ from sensor_msgs.msg import JointState
 import ser
 from servoController import set_angle
 
-class controlRobot(Node):
+class robo_controller(Node):
     def __init__(self):
-        super().__init__("controlRobot")
+        super().__init__("robo_controller")
 
         self.wheel_radius = 0.0325
         self.wheel_dist = 0.2155
@@ -41,10 +41,10 @@ class controlRobot(Node):
         self.get_logger().info(f"x: {msg.linear.x},{msg.angular.z}")
         self.wl = (2*msg.linear.x + msg.angular.z*self.wheel_dist)/(2*self.wheel_radius)
         self.wr = (2*msg.linear.x - msg.angular.z*self.wheel_dist)/(2*self.wheel_radius)
-        self.send_floats_to_arduino(self.wl,self.wr)
+        self.send_floats_to_arduino(1,[self.wl,self.wr])
 
     def excavatorCallback(self,msg):
-        set_angle(list(msg.data))
+        self.send_floats_to_arduino(2,list(msg.data))
 
     def timerCallback(self):
         self.joint_state = JointState()
@@ -59,9 +59,9 @@ class controlRobot(Node):
         self.joint_state.effort = [0.0,0.0,0.0,0.0]
         self.joint_state_pub.publish(self.joint_state)
 
-    def send_floats_to_arduino(self,float1,float2):
-        try:          
-            data = f"[{float1},{float2}]\n"
+    def send_floats_to_arduino(self,ID,values):
+        try:
+            data = f"{ID},"+",".join([str(i) for i in values]) + "\n"
             print(f"Sending data: {data.strip()}")
             self.ser.write(data.encode())
             response = self.ser.readline().decode('utf-8').strip()
@@ -73,8 +73,7 @@ class controlRobot(Node):
         
         except KeyboardInterrupt:
             print("\nTerminating the program.")
-            
-            # Close the serial connection
+         
             self.ser.close()
             print("Connection closed.")
             
@@ -84,6 +83,6 @@ class controlRobot(Node):
 
 def main():
     rclpy.init()
-    node = controlRobot()
+    node = robo_controller()
     rclpy.spin(node)
     rclpy.shutdown()

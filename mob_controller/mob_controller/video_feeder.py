@@ -4,10 +4,10 @@ from sensor_msgs.msg import CompressedImage
 import cv2
 #from cv_bridge import CvBridge
 from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
-class camTester(Node):
+class video_feeder(Node):
     def __init__(self):
-        super().__init__("camTester")
-        self.get_logger().info("Camera tester node created")
+        super().__init__("video_feeder")
+        self.get_logger().info("Video feed started")
         self.image_capture = cv2.VideoCapture(0)
         self.msg = CompressedImage()
         qos = rclpy.qos.QoSProfile(reliability=rclpy.qos.QoSReliabilityPolicy.BEST_EFFORT,durability=rclpy.qos.QoSDurabilityPolicy.TRANSIENT_LOCAL,depth=10)
@@ -27,7 +27,7 @@ class camTester(Node):
 def main():
     rclpy.init()
     try:
-        node = camTester()
+        node = video_feeder()
         rclpy.spin(node)
     except KeyboardInterrupt:
         node.destroy_node()

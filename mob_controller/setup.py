@@ -20,15 +20,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "runBot = mob_controller.simpleControl:main",
-            "objDetect = mob_controller.objDetect:main",
-            "excavator_controller = mob_controller.excavatorController:main",
-            "move_action_server = mob_controller.actionsScripts:main",
-            "move_action_client = mob_controller.action_client:main",
-            "cam_tester = mob_controller.camTest:main",
+            "robo_controller = mob_controller.robo_controller:main",
+            "show_video = mob_controller.show_video:main",
+            "mob_teleop_twist_keyboard = mob_controller.mob_teleop_twist_keyboard:main",
+            "cam_feeder = mob_controller.video_feeder:main",
             "control_robot = mob_controller.controlRobot:main",
-            "user_interface = mob_controller.userInterface:main",
-            "test = mob_controller.lidarTest:main",
         ],
     },
 )
